@@ -22,6 +22,13 @@ const app = document.getElementById('app');
 const $ = (sel, root = app) => root.querySelector(sel);
 const $$ = (sel, root = app) => root.querySelectorAll(sel);
 
+/** Escape HTML to prevent XSS when inserting user-provided text. */
+function esc(str) {
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
 let activeGame = null;
 
 // ═══════════════════════════════════════════
@@ -119,7 +126,7 @@ async function renderMenu() {
         <div class="menu-header">
           <div class="profile-badge">
             <span class="profile-avatar">${profile.avatar}</span>
-            <span class="profile-name">Hi, ${profile.name}!</span>
+            <span class="profile-name">Hi, ${esc(profile.name)}!</span>
           </div>
         </div>
         <h2 class="menu-title">What do you want to play?</h2>
