@@ -26,9 +26,9 @@ import { Audio } from '../audio.js';
 
 // ── Mode definitions ──
 const MODES = [
-  { step: 2,  label: 'Count by 2s',  icon: '\u{270C}\u{FE0F}', color: '#FF9F43' },
-  { step: 5,  label: 'Count by 5s',  icon: '\u{1F590}\u{FE0F}', color: '#54A0FF' },
-  { step: 10, label: 'Count by 10s', icon: '\u{1F51F}', color: '#5F27CD' },
+  { step: 2,  label: 'Count by 2s',  icon: '\u{270C}\u{FE0F}', color: '#FF9F43', max: 100 },
+  { step: 5,  label: 'Count by 5s',  icon: '\u{1F590}\u{FE0F}', color: '#54A0FF', max: 200 },
+  { step: 10, label: 'Count by 10s', icon: '\u{1F51F}', color: '#5F27CD', max: 500 },
 ];
 
 const HOP_MSGS = [
@@ -194,6 +194,7 @@ const NumberHopGame = {
         <div class="nh-header">
           <button class="fm-exit-btn" id="nh-back">\u{2190}</button>
           <span class="nh-level-label" id="nh-level-label"></span>
+          <button class="nh-peek-btn" id="nh-peek">\u{1F4A1} Peek</button>
         </div>
         <div class="nh-stage">
           <div class="nh-instruction" id="nh-instruction"></div>
@@ -203,6 +204,15 @@ const NumberHopGame = {
           <div class="nh-feedback" id="nh-feedback"></div>
           <div class="nh-choices" id="nh-choices"></div>
           <button class="nh-next-btn" id="nh-next" style="display:none">Next Level \u{2192}</button>
+        </div>
+        <div class="nh-peek-overlay" id="nh-peek-overlay" style="display:none">
+          <div class="nh-peek-card">
+            <div class="nh-peek-header">
+              <span class="nh-peek-title" id="nh-peek-title"></span>
+              <button class="nh-peek-close" id="nh-peek-close">\u{2715}</button>
+            </div>
+            <div class="nh-peek-grid" id="nh-peek-grid"></div>
+          </div>
         </div>
         <div class="fm-confetti" id="nh-confetti"></div>
       </div>`;
@@ -216,11 +226,31 @@ const NumberHopGame = {
       feedback: this._container.querySelector('#nh-feedback'),
       nextBtn: this._container.querySelector('#nh-next'),
       confetti: this._container.querySelector('#nh-confetti'),
+      peekOverlay: this._container.querySelector('#nh-peek-overlay'),
+      peekTitle: this._container.querySelector('#nh-peek-title'),
+      peekGrid: this._container.querySelector('#nh-peek-grid'),
     };
 
     this._container.querySelector('#nh-back').addEventListener('click', () => {
       Audio.click();
       this._showModeSelect();
+    });
+
+    this._container.querySelector('#nh-peek').addEventListener('click', () => {
+      Audio.pop();
+      this._showPeekChart();
+    });
+
+    this._container.querySelector('#nh-peek-close').addEventListener('click', () => {
+      Audio.click();
+      this._el.peekOverlay.style.display = 'none';
+    });
+
+    this._el.peekOverlay.addEventListener('click', (e) => {
+      if (e.target === this._el.peekOverlay) {
+        Audio.click();
+        this._el.peekOverlay.style.display = 'none';
+      }
     });
 
     this._el.nextBtn.addEventListener('click', () => {
@@ -485,6 +515,27 @@ const NumberHopGame = {
     setTimeout(() => {
       if (!this._destroyed) el.innerHTML = '';
     }, 1200);
+  },
+
+  // ══════════════════════════════════════
+  //  Peek chart
+  // ══════════════════════════════════════
+
+  _showPeekChart() {
+    const modeInfo = MODES.find(m => m.step === this._state.mode);
+    const { step, max, label } = modeInfo;
+
+    this._el.peekTitle.textContent = `\u{1F4A1} ${label}`;
+    this._el.peekGrid.innerHTML = '';
+
+    for (let n = step; n <= max; n += step) {
+      const cell = document.createElement('span');
+      cell.className = 'nh-peek-cell';
+      cell.textContent = n;
+      this._el.peekGrid.appendChild(cell);
+    }
+
+    this._el.peekOverlay.style.display = '';
   },
 };
 
