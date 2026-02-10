@@ -1,0 +1,1218 @@
+/* =============================================================
+   AMARA GAME PLATFORM — Styles
+   =============================================================
+   Organized as:
+     1. Reset & variables
+     2. Layout & typography
+     3. Shared components (buttons, badges)
+     4. Welcome screen
+     5. Menu screen
+     6. Category / game list screen
+     7. Game screen (container)
+     8. Feed the Monster (game-specific)
+     9. Animations
+    10. Responsive
+   ============================================================= */
+
+/* ─────────────────────────────────────────
+   1. Reset & CSS Variables
+   ───────────────────────────────────────── */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --color-bg:       #E8F4FD;
+  --color-bg-alt:   #F0E6FF;
+  --color-surface:  #FFFFFF;
+  --color-text:     #2D3436;
+  --color-text-mid: #636E72;
+  --color-primary:  #6C5CE7;
+  --color-primary-l:#A29BFE;
+  --color-success:  #00B894;
+  --color-warm:     #FDCB6E;
+
+  --radius-sm:  8px;
+  --radius-md:  16px;
+  --radius-lg:  24px;
+  --radius-xl:  32px;
+  --radius-full:50%;
+
+  --shadow-card:   0 2px 12px rgba(0,0,0,0.06);
+  --shadow-soft:   0 4px 20px rgba(0,0,0,0.08);
+  --shadow-medium: 0 8px 30px rgba(0,0,0,0.12);
+
+  --font: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --ease: 0.2s ease;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--font);
+  background: linear-gradient(135deg, var(--color-bg) 0%, var(--color-bg-alt) 100%);
+  color: var(--color-text);
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ─────────────────────────────────────────
+   2. App container & screen transitions
+   ───────────────────────────────────────── */
+
+#app {
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.2s ease;
+}
+
+.screen {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ─────────────────────────────────────────
+   3. Shared components
+   ───────────────────────────────────────── */
+
+.btn {
+  font-family: var(--font);
+  font-weight: 700;
+  border: none;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: transform var(--ease), box-shadow var(--ease);
+  touch-action: manipulation;
+}
+
+.btn:active {
+  transform: scale(0.95);
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: white;
+  padding: 16px 40px;
+  font-size: 1.3rem;
+  box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+}
+
+.btn-primary:disabled {
+  background: #B2BEC3;
+  box-shadow: none;
+  cursor: default;
+}
+
+.btn-large {
+  padding: 20px 48px;
+  font-size: 1.5rem;
+}
+
+.btn-back {
+  background: var(--color-surface);
+  color: var(--color-text);
+  padding: 10px 20px;
+  font-size: 1.1rem;
+  box-shadow: var(--shadow-card);
+}
+
+/* ─────────────────────────────────────────
+   4. Welcome screen
+   ───────────────────────────────────────── */
+
+.welcome-screen {
+  justify-content: center;
+  gap: 12px;
+}
+
+.welcome-character {
+  font-size: 4rem;
+  animation: gentle-bounce 2s infinite ease-in-out;
+}
+
+.welcome-title {
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--color-primary);
+}
+
+.welcome-subtitle {
+  font-size: 1.4rem;
+  color: var(--color-text-mid);
+}
+
+.welcome-input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 400px;
+  margin-top: 8px;
+}
+
+.name-input {
+  font-family: var(--font);
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+  padding: 16px 24px;
+  border: 3px solid var(--color-primary-l);
+  border-radius: var(--radius-lg);
+  outline: none;
+  width: 100%;
+  transition: border-color var(--ease);
+  background: var(--color-surface);
+}
+
+.name-input:focus {
+  border-color: var(--color-primary);
+}
+
+.avatar-picker {
+  text-align: center;
+}
+
+.avatar-label {
+  font-size: 1.1rem;
+  color: var(--color-text-mid);
+  margin-bottom: 10px;
+}
+
+.avatar-options {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.avatar-btn {
+  width: 56px;
+  height: 56px;
+  font-size: 1.8rem;
+  border: 3px solid transparent;
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  cursor: pointer;
+  transition: all var(--ease);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-btn.selected {
+  border-color: var(--color-primary);
+  transform: scale(1.15);
+  box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.2);
+}
+
+/* ─────────────────────────────────────────
+   5. Menu screen
+   ───────────────────────────────────────── */
+
+.menu-screen {
+  padding-top: 24px;
+  gap: 24px;
+}
+
+.menu-header {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.profile-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--color-surface);
+  padding: 8px 18px 8px 10px;
+  border-radius: 100px;
+  box-shadow: var(--shadow-card);
+}
+
+.profile-avatar { font-size: 1.6rem; }
+.profile-name   { font-size: 1.1rem; font-weight: 700; }
+
+.menu-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 20px;
+  width: 100%;
+  max-width: 600px;
+  padding: 10px;
+}
+
+.category-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 32px 16px;
+  background: var(--color-surface);
+  border: none;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-soft);
+  cursor: pointer;
+  transition: transform var(--ease), box-shadow var(--ease);
+  border-bottom: 5px solid var(--cat-color, #ccc);
+  font-family: var(--font);
+}
+
+.category-tile:hover  { transform: translateY(-4px); box-shadow: var(--shadow-medium); }
+.category-tile:active { transform: scale(0.96); }
+
+.category-icon  { font-size: 3rem; }
+.category-label { font-size: 1.2rem; font-weight: 700; }
+
+/* ─────────────────────────────────────────
+   6. Category / game list screen
+   ───────────────────────────────────────── */
+
+.category-screen { gap: 24px; }
+
+.screen-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.screen-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+}
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+  width: 100%;
+  max-width: 700px;
+  padding: 10px;
+}
+
+.game-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 36px 20px;
+  background: var(--color-surface);
+  border: none;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-soft);
+  cursor: pointer;
+  transition: transform var(--ease), box-shadow var(--ease);
+  font-family: var(--font);
+}
+
+.game-tile:hover  { transform: translateY(-4px); box-shadow: var(--shadow-medium); }
+.game-tile:active { transform: scale(0.96); }
+
+.game-thumbnail { font-size: 3.5rem; }
+.game-title     { font-size: 1.15rem; font-weight: 700; text-align: center; }
+
+/* ─────────────────────────────────────────
+   7. Game screen container
+   ───────────────────────────────────────── */
+
+.game-screen {
+  padding: 0;
+  overflow: hidden;
+}
+
+/* ── Coming Soon placeholder screens ── */
+
+.cs-screen {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: linear-gradient(135deg, var(--color-bg) 0%, var(--color-bg-alt) 100%);
+  position: relative;
+  text-align: center;
+  padding: 20px;
+}
+
+.cs-back {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+}
+
+.cs-icon {
+  font-size: 5rem;
+  animation: gentle-bounce 2s infinite ease-in-out;
+}
+
+.cs-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--color-primary);
+}
+
+.cs-teaser {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-warm);
+}
+
+.cs-sub {
+  font-size: 1.1rem;
+  color: var(--color-text-mid);
+}
+
+/* =============================================================
+   8. FEED THE MONSTER — Game-specific styles
+   ============================================================= */
+
+.fm-game {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: linear-gradient(180deg, #C8E6F5 0%, #B2DFDB 50%, #C5E1A5 100%);
+  overflow: hidden;
+}
+
+/* Exit button */
+.fm-exit-btn {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  border: none;
+  background: rgba(255,255,255,0.85);
+  font-size: 1.3rem;
+  cursor: pointer;
+  z-index: 100;
+  transition: transform var(--ease);
+  font-family: var(--font);
+  font-weight: 700;
+  color: var(--color-text);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fm-exit-btn:active { transform: scale(0.9); }
+
+/* ── Stage (monster area) ── */
+
+.fm-stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px;
+  min-height: 0;
+}
+
+/* Speech bubble */
+.fm-speech-bubble {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 10px 24px;
+  box-shadow: var(--shadow-card);
+  position: relative;
+  max-width: 90%;
+  text-align: center;
+  animation: pop-in 0.3s ease;
+}
+
+.fm-speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 12px solid white;
+}
+
+#fm-speech {
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+/* ── Monster character (CSS art) ── */
+
+.fm-monster {
+  position: relative;
+  width: 140px;
+  height: 170px;
+  transition: transform 0.3s ease;
+}
+
+/* Body */
+.fm-body {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 116px;
+  height: 116px;
+  background: linear-gradient(135deg, #9C6AFF 0%, #7C4DFF 100%);
+  border-radius: 50% 50% 46% 46%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: inset -4px -6px 12px rgba(0,0,0,0.12);
+}
+
+/* Eyes */
+.fm-eye {
+  position: absolute;
+  width: 30px;
+  height: 34px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 20px;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
+}
+
+.fm-eye.fm-left  { left: 20px; }
+.fm-eye.fm-right { right: 20px; }
+
+.fm-pupil {
+  width: 13px;
+  height: 15px;
+  background: #2D3436;
+  border-radius: 50%;
+  position: relative;
+  transition: transform 0.15s ease;
+}
+
+.fm-pupil::after {
+  content: '';
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: white;
+  border-radius: 50%;
+  top: 2px;
+  right: 2px;
+}
+
+/* Mouth (drop target) */
+.fm-mouth {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 46px;
+  height: 26px;
+  background: #D32F2F;
+  border-radius: 4px 4px 24px 24px;
+  transition: all 0.2s ease;
+  box-shadow: inset 0 -4px 8px rgba(0,0,0,0.2);
+}
+
+.fm-mouth.fm-mouth-hover {
+  width: 56px;
+  height: 36px;
+  background: #C62828;
+  box-shadow: inset 0 -4px 8px rgba(0,0,0,0.25), 0 0 16px rgba(211, 47, 47, 0.3);
+}
+
+/* Antennae */
+.fm-antenna {
+  position: absolute;
+  width: 4px;
+  height: 28px;
+  background: #9C6AFF;
+  top: 12px;
+  border-radius: 2px;
+}
+
+.fm-antenna.fm-left  { left: 35px;  transform: rotate(-15deg); }
+.fm-antenna.fm-right { right: 35px; transform: rotate(15deg); }
+
+.fm-antenna::after {
+  content: '';
+  position: absolute;
+  top: -9px;
+  left: -5px;
+  width: 14px;
+  height: 14px;
+  background: #CE93D8;
+  border-radius: 50%;
+}
+
+/* Feet */
+.fm-feet {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 28px;
+}
+
+.fm-foot {
+  width: 28px;
+  height: 14px;
+  background: #9C6AFF;
+  border-radius: 50% 50% 40% 40%;
+}
+
+/* Monster states */
+.fm-monster.fm-eating { animation: monster-chomp 0.4s ease; }
+.fm-monster.fm-happy  { animation: monster-dance 0.6s ease infinite; }
+
+/* ── Progress dots ── */
+
+.fm-progress {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 20px;
+  background: rgba(255,255,255,0.55);
+  border-radius: 100px;
+  min-height: 44px;
+  backdrop-filter: blur(4px);
+}
+
+.fm-dot {
+  font-size: 1.5rem;
+  display: inline-block;
+  transition: transform 0.3s ease;
+  line-height: 1;
+}
+
+.fm-dot.fm-filled {
+  animation: dot-fill 0.35s ease;
+}
+
+.fm-counter-label {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-text-mid);
+}
+
+.fm-counter-num {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  margin-left: 4px;
+}
+
+/* ── Check button ── */
+
+.fm-check-btn {
+  padding: 14px 36px;
+  font-family: var(--font);
+  font-size: 1.3rem;
+  font-weight: 800;
+  border: none;
+  border-radius: 100px;
+  background: var(--color-success);
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 184, 148, 0.35);
+  transition: transform var(--ease), box-shadow var(--ease), opacity var(--ease);
+  touch-action: manipulation;
+  animation: pop-in 0.3s ease;
+}
+
+.fm-check-btn:hover {
+  box-shadow: 0 6px 20px rgba(0, 184, 148, 0.45);
+}
+
+.fm-check-btn:active {
+  transform: scale(0.95);
+}
+
+.fm-check-btn:disabled {
+  background: #B2BEC3;
+  box-shadow: none;
+  cursor: default;
+}
+
+/* ── Feedback messages ── */
+
+.fm-feedback {
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-align: center;
+  min-height: 1.5em;
+  padding: 0 16px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.fm-feedback-show {
+  opacity: 1;
+  animation: pop-in 0.3s ease;
+}
+
+.fm-feedback-nudge {
+  color: #E17055;
+}
+
+.fm-feedback-oops {
+  color: #D63031;
+}
+
+/* Monster thinking state (for "too few") */
+.fm-monster.fm-thinking {
+  animation: monster-think 0.8s ease;
+}
+
+/* ── Food tray ── */
+
+.fm-tray {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: rgba(255,255,255,0.45);
+  border-top: 2px solid rgba(255,255,255,0.7);
+  min-height: 96px;
+  backdrop-filter: blur(4px);
+}
+
+.fm-food-item {
+  width: 64px;
+  height: 64px;
+  font-size: 2.2rem;
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+  cursor: grab;
+  transition: transform 0.2s ease, opacity 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: none;
+  animation: pop-in 0.3s ease backwards;
+}
+
+.fm-food-item:active  { cursor: grabbing; }
+.fm-food-item.fm-drag-source { opacity: 0.25; transform: scale(0.9); }
+.fm-food-item.fm-dragging    { transform: scale(1.15); box-shadow: var(--shadow-medium); cursor: grabbing; }
+.fm-food-item.fm-eaten       { transform: scale(0) rotate(30deg); opacity: 0; }
+
+/* ── Confetti ── */
+
+.fm-confetti {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  pointer-events: none;
+  z-index: 200;
+}
+
+.fm-particle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  animation: confetti-burst 1s ease-out forwards;
+}
+
+/* =============================================================
+   9. NUMBER HOP — Game-specific styles
+   ============================================================= */
+
+.nh-game {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: linear-gradient(180deg, #E3F2FD 0%, #BBDEFB 40%, #90CAF9 100%);
+  overflow: hidden;
+}
+
+/* ── Mode selection ── */
+
+.nh-mode-screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 20px;
+}
+
+.nh-mode-icon {
+  font-size: 4rem;
+  animation: gentle-bounce 2s infinite ease-in-out;
+}
+
+.nh-mode-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1565C0;
+}
+
+.nh-mode-sub {
+  font-size: 1.15rem;
+  color: var(--color-text-mid);
+}
+
+.nh-mode-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  max-width: 340px;
+  margin-top: 8px;
+}
+
+.nh-mode-btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  background: white;
+  border: none;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-soft);
+  cursor: pointer;
+  font-family: var(--font);
+  transition: transform var(--ease), box-shadow var(--ease);
+  border-left: 5px solid var(--mode-color);
+}
+
+.nh-mode-btn:hover  { box-shadow: var(--shadow-medium); }
+.nh-mode-btn:active { transform: scale(0.97); }
+
+.nh-mode-btn-icon { font-size: 2rem; }
+.nh-mode-btn-info { display: flex; flex-direction: column; align-items: flex-start; }
+.nh-mode-btn-label { font-size: 1.15rem; font-weight: 700; }
+.nh-mode-btn-level { font-size: 0.85rem; font-weight: 600; color: var(--color-text-mid); }
+
+.nh-reset-btn {
+  margin-left: auto;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: rgba(0,0,0,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: var(--color-text-mid);
+  transition: background var(--ease), color var(--ease), transform var(--ease);
+  flex-shrink: 0;
+}
+
+.nh-reset-btn:hover {
+  background: rgba(231, 76, 60, 0.12);
+  color: #E74C3C;
+}
+
+.nh-reset-btn:active {
+  transform: scale(0.9);
+}
+
+/* ── Game header ── */
+
+.nh-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+}
+
+.nh-level-label {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1565C0;
+}
+
+/* ── Game stage ── */
+
+.nh-stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 16px;
+}
+
+.nh-instruction {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1565C0;
+  text-align: center;
+}
+
+/* ── Lily pad pond ── */
+
+.nh-pond {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  position: relative;
+  padding-top: 48px;
+  flex-wrap: wrap;
+}
+
+.nh-pad {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #4CAF50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: white;
+  box-shadow: 0 3px 10px rgba(76, 175, 80, 0.3);
+  transition: all 0.3s ease;
+}
+
+/* Upcoming pads — muted, not yet reachable */
+.nh-pad.nh-upcoming {
+  background: #A5D6A7;
+  color: rgba(255,255,255,0.6);
+  box-shadow: 0 2px 6px rgba(76, 175, 80, 0.15);
+  opacity: 0.6;
+}
+
+/* Current pad — the active "?" the child is answering */
+.nh-pad.nh-current {
+  background: #FFD93D;
+  color: #5D4037;
+  box-shadow: 0 0 20px rgba(255, 217, 61, 0.5);
+  animation: pad-pulse 1.2s infinite ease-in-out;
+}
+
+/* Revealed pads — already answered correctly */
+.nh-pad.nh-revealed {
+  background: #66BB6A;
+  animation: pop-in 0.3s ease;
+}
+
+/* Goal pad (last pad) — distinct color to mark the finish line */
+.nh-pad.nh-goal {
+  background: #FF7043;
+  color: white;
+  box-shadow: 0 3px 12px rgba(255, 112, 67, 0.35);
+}
+
+.nh-pad.nh-goal.nh-upcoming {
+  background: #FFAB91;
+  opacity: 0.6;
+  box-shadow: 0 2px 6px rgba(255, 112, 67, 0.15);
+}
+
+.nh-pad.nh-goal.nh-current {
+  background: #FF7043;
+  color: #FFF3E0;
+  box-shadow: 0 0 22px rgba(255, 112, 67, 0.5);
+  animation: pad-pulse 1.2s infinite ease-in-out;
+}
+
+.nh-pad.nh-goal.nh-revealed {
+  background: #FF7043;
+}
+
+/* Goal pad celebration state */
+.nh-pad.nh-goal-complete {
+  background: #FF7043;
+  box-shadow: 0 0 24px rgba(255, 112, 67, 0.6);
+  animation: goal-celebrate 0.6s ease;
+}
+
+.nh-pad.nh-wiggle {
+  animation: nh-wiggle 0.5s ease;
+}
+
+.nh-arrow {
+  font-size: 1.1rem;
+  color: rgba(76, 175, 80, 0.45);
+  font-weight: 700;
+}
+
+/* ── Frog ── */
+
+.nh-frog {
+  position: absolute;
+  top: 0;
+  font-size: 2.2rem;
+  transform: translateX(-50%);
+  z-index: 10;
+  transition: left 0.4s ease, opacity 0.15s ease;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+}
+
+.nh-frog.nh-hopping {
+  animation: frog-hop 0.4s ease;
+}
+
+/* ── Choice buttons ── */
+
+.nh-choices {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.nh-choice-btn {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-lg);
+  border: 3px solid transparent;
+  background: white;
+  font-family: var(--font);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--color-text);
+  cursor: pointer;
+  box-shadow: var(--shadow-soft);
+  transition: transform var(--ease), border-color var(--ease), background var(--ease);
+  touch-action: manipulation;
+  animation: pop-in 0.3s ease backwards;
+}
+
+.nh-choice-btn:nth-child(2) { animation-delay: 0.07s; }
+.nh-choice-btn:nth-child(3) { animation-delay: 0.14s; }
+
+.nh-choice-btn:active { transform: scale(0.93); }
+
+.nh-choice-btn.nh-correct {
+  background: #C8E6C9;
+  border-color: #4CAF50;
+  color: #2E7D32;
+}
+
+.nh-choice-btn.nh-wrong {
+  background: #FFCDD2;
+  border-color: #EF5350;
+  color: #C62828;
+  opacity: 0.5;
+}
+
+.nh-choice-btn:disabled { cursor: default; }
+
+/* ── Feedback ── */
+
+.nh-feedback {
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-align: center;
+  min-height: 1.5em;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.nh-feedback-show    { opacity: 1; animation: pop-in 0.3s ease; }
+.nh-feedback-success { color: #2E7D32; }
+.nh-feedback-nudge   { color: #E17055; }
+
+/* ── Next level button ── */
+
+.nh-next-btn {
+  padding: 14px 32px;
+  font-family: var(--font);
+  font-size: 1.2rem;
+  font-weight: 800;
+  border: none;
+  border-radius: 100px;
+  background: #1565C0;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(21, 101, 192, 0.3);
+  transition: transform var(--ease);
+  touch-action: manipulation;
+  animation: pop-in 0.3s ease;
+}
+
+.nh-next-btn:active { transform: scale(0.95); }
+
+/* =============================================================
+   10. Animations
+   ============================================================= */
+
+@keyframes gentle-bounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+
+@keyframes pop-in {
+  0%   { transform: scale(0.7); opacity: 0; }
+  60%  { transform: scale(1.06); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes monster-chomp {
+  0%, 100% { transform: scaleY(1); }
+  40%      { transform: scaleY(0.92); }
+}
+
+@keyframes monster-dance {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  25%      { transform: rotate(-6deg) scale(1.06); }
+  75%      { transform: rotate(6deg) scale(1.06); }
+}
+
+@keyframes monster-think {
+  0%, 100% { transform: rotate(0deg); }
+  25%      { transform: rotate(-4deg); }
+  75%      { transform: rotate(4deg); }
+}
+
+@keyframes dot-fill {
+  0%   { transform: scale(0.4); }
+  50%  { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+
+@keyframes pad-pulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 217, 61, 0.5); }
+  50%      { transform: scale(1.08); box-shadow: 0 0 30px rgba(255, 217, 61, 0.7); }
+}
+
+@keyframes frog-hop {
+  0%   { top: 0; }
+  40%  { top: -30px; }
+  100% { top: 0; }
+}
+
+@keyframes goal-celebrate {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.25); }
+  70%  { transform: scale(0.95); }
+  100% { transform: scale(1.1); }
+}
+
+@keyframes nh-wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  20%      { transform: rotate(-8deg); }
+  40%      { transform: rotate(8deg); }
+  60%      { transform: rotate(-6deg); }
+  80%      { transform: rotate(6deg); }
+}
+
+@keyframes confetti-burst {
+  0% {
+    transform: translate(-50%, -50%) scale(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1) rotate(var(--r));
+    opacity: 0;
+  }
+}
+
+/* =============================================================
+   10. Responsive
+   ============================================================= */
+
+/* Small phones */
+@media (max-width: 600px) {
+  .welcome-title     { font-size: 2.2rem; }
+  .welcome-character { font-size: 3rem; }
+  .name-input        { font-size: 1.2rem; padding: 12px 18px; }
+  .btn-large         { padding: 16px 36px; font-size: 1.3rem; }
+
+  .category-grid     { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .category-tile     { padding: 24px 12px; }
+  .category-icon     { font-size: 2.4rem; }
+
+  .game-grid         { grid-template-columns: repeat(2, 1fr); }
+
+  #fm-speech         { font-size: 1.15rem; }
+  .fm-food-item      { width: 56px; height: 56px; font-size: 1.8rem; }
+  .fm-monster        { transform: scale(0.85); }
+  .fm-check-btn      { padding: 12px 28px; font-size: 1.15rem; }
+  .fm-feedback       { font-size: 1rem; }
+
+  .nh-pad            { width: 46px; height: 46px; font-size: 1.1rem; }
+  .nh-choice-btn     { width: 64px; height: 64px; font-size: 1.3rem; }
+  .nh-frog           { font-size: 1.8rem; }
+  .nh-instruction    { font-size: 1.05rem; }
+  .nh-mode-title     { font-size: 1.6rem; }
+}
+
+/* Very small phones */
+@media (max-width: 380px) {
+  .category-grid  { gap: 10px; }
+  .category-tile  { padding: 20px 10px; }
+  .fm-food-item   { width: 50px; height: 50px; font-size: 1.6rem; }
+
+  .nh-pad         { width: 40px; height: 40px; font-size: 0.95rem; }
+  .nh-choice-btn  { width: 56px; height: 56px; font-size: 1.15rem; }
+  .nh-pond        { gap: 3px; }
+}
+
+/* Landscape phones — give more room to the game */
+@media (max-height: 500px) and (orientation: landscape) {
+  .fm-stage       { flex-direction: row; gap: 12px; padding: 8px; }
+  .fm-monster     { transform: scale(0.65); }
+  .fm-tray        { padding: 8px; gap: 8px; min-height: 70px; }
+  .fm-food-item   { width: 48px; height: 48px; font-size: 1.5rem; }
+  #fm-speech      { font-size: 1rem; }
+  .fm-speech-bubble { padding: 6px 16px; }
+  .fm-progress    { padding: 4px 12px; min-height: 36px; }
+  .fm-dot         { font-size: 1.2rem; }
+  .fm-check-btn   { padding: 8px 20px; font-size: 1rem; }
+  .nh-stage       { gap: 10px; padding: 8px; }
+  .nh-choice-btn  { width: 56px; height: 56px; font-size: 1.1rem; }
+  .nh-next-btn    { padding: 10px 24px; font-size: 1rem; }
+}
+
+/* Tablets & large screens — keep centered, don't stretch */
+@media (min-width: 900px) {
+  .category-grid { max-width: 640px; }
+  .game-grid     { max-width: 740px; }
+  .fm-monster    { transform: scale(1.1); }
+  .fm-food-item  { width: 72px; height: 72px; font-size: 2.5rem; }
+  #fm-speech     { font-size: 1.5rem; }
+
+  .nh-pad        { width: 64px; height: 64px; font-size: 1.5rem; }
+  .nh-choice-btn { width: 80px; height: 80px; font-size: 1.7rem; }
+  .nh-frog       { font-size: 2.6rem; }
+}
