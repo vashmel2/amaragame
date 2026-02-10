@@ -119,15 +119,17 @@ async function renderMenu() {
   if (!profile) return renderWelcome();
 
   const cats = GameRegistry.getCategories();
+  const allProfiles = await ProfileManager.getAllProfiles();
 
   showScreen(container => {
     container.innerHTML = `
       <div class="screen menu-screen">
         <div class="menu-header">
-          <div class="profile-badge">
+          <button class="profile-badge" id="profile-badge">
             <span class="profile-avatar">${profile.avatar}</span>
             <span class="profile-name">Hi, ${esc(profile.name)}!</span>
-          </div>
+            <span class="profile-switch-hint">\u{25BE}</span>
+          </button>
         </div>
         <h2 class="menu-title">What do you want to play?</h2>
         <div class="category-grid">
@@ -139,13 +141,66 @@ async function renderMenu() {
             </button>
           `).join('')}
         </div>
+
+        <div class="profile-overlay" id="profile-overlay" style="display:none">
+          <div class="profile-card">
+            <div class="profile-card-header">
+              <span class="profile-card-title">Who's playing?</span>
+              <button class="profile-card-close" id="profile-close">\u{2715}</button>
+            </div>
+            <div class="profile-list" id="profile-list">
+              ${allProfiles.map(p => `
+                <button class="profile-item${p.id === profile.id ? ' profile-active' : ''}" data-id="${p.id}">
+                  <span class="profile-item-avatar">${p.avatar}</span>
+                  <span class="profile-item-name">${esc(p.name)}</span>
+                  ${p.id === profile.id ? '<span class="profile-item-check">\u{2714}</span>' : ''}
+                </button>
+              `).join('')}
+            </div>
+            <button class="profile-add-btn" id="profile-add">\u{2795} Add Player</button>
+          </div>
+        </div>
       </div>`;
 
+    // Category tiles
     $$('.category-tile').forEach(tile => {
       tile.addEventListener('click', () => {
         Audio.click();
         renderCategory(tile.dataset.category);
       });
+    });
+
+    // Profile switcher
+    const overlay = $('#profile-overlay');
+
+    $('#profile-badge').addEventListener('click', () => {
+      Audio.pop();
+      overlay.style.display = '';
+    });
+
+    $('#profile-close').addEventListener('click', () => {
+      Audio.click();
+      overlay.style.display = 'none';
+    });
+
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) {
+        Audio.click();
+        overlay.style.display = 'none';
+      }
+    });
+
+    $$('.profile-item').forEach(item => {
+      item.addEventListener('click', async () => {
+        Audio.pop();
+        await ProfileManager.setActiveProfile(item.dataset.id);
+        renderMenu();
+      });
+    });
+
+    $('#profile-add').addEventListener('click', () => {
+      Audio.click();
+      renderWelcome();
     });
   });
 }

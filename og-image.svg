@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E8F4FD"/>
+      <stop offset="100%" stop-color="#F0E6FF"/>
+    </linearGradient>
+    <linearGradient id="pill" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6C5CE7"/>
+      <stop offset="100%" stop-color="#A29BFE"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Decorative circles -->
+  <circle cx="100" cy="80" r="40" fill="#FDCB6E" opacity="0.3"/>
+  <circle cx="1100" cy="550" r="55" fill="#6C5CE7" opacity="0.15"/>
+  <circle cx="1050" cy="100" r="30" fill="#00B894" opacity="0.25"/>
+  <circle cx="150" cy="530" r="35" fill="#FF6B6B" opacity="0.2"/>
+
+  <!-- Emoji characters row -->
+  <text x="600" y="200" text-anchor="middle" font-size="80">
+    <tspan>&#x1F438;</tspan>
+    <tspan dx="20">&#x1F47E;</tspan>
+    <tspan dx="20">&#x2B50;</tspan>
+    <tspan dx="20">&#x1F331;</tspan>
+    <tspan dx="20">&#x1F60A;</tspan>
+  </text>
+
+  <!-- Title -->
+  <text x="600" y="330" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="72" font-weight="800" fill="#2D3436">
+    Play to Learn
+  </text>
+
+  <!-- Subtitle pill -->
+  <rect x="355" y="370" width="490" height="52" rx="26" fill="url(#pill)"/>
+  <text x="600" y="405" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="24" font-weight="700" fill="white">
+    Fun learning games for kids ages 4&#x2013;7
+  </text>
+
+  <!-- Category pills -->
+  <rect x="270" y="460" width="140" height="40" rx="20" fill="#FF9F43" opacity="0.9"/>
+  <text x="340" y="487" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="18" font-weight="700" fill="white">&#x1F522; Counting</text>
+
+  <rect x="430" y="460" width="140" height="40" rx="20" fill="#00B894" opacity="0.9"/>
+  <text x="500" y="487" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="18" font-weight="700" fill="white">&#x1F4DA; Reading</text>
+
+  <rect x="590" y="460" width="140" height="40" rx="20" fill="#6C5CE7" opacity="0.9"/>
+  <text x="660" y="487" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="18" font-weight="700" fill="white">&#x1F9E9; Thinking</text>
+
+  <rect x="750" y="460" width="140" height="40" rx="20" fill="#E17055" opacity="0.9"/>
+  <text x="820" y="487" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="18" font-weight="700" fill="white">&#x1F49C; Feelings</text>
+
+  <!-- Bottom tagline -->
+  <text x="600" y="565" text-anchor="middle" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="20" font-weight="600" fill="#636E72">
+    No ads &#x00B7; No tracking &#x00B7; Free &amp; safe for kids
+  </text>
+</svg>

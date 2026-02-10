@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6C5CE7"/>
+      <stop offset="100%" stop-color="#A29BFE"/>
+    </linearGradient>
+    <linearGradient id="play" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#F0EDFF"/>
+    </linearGradient>
+  </defs>
+  <!-- Rounded square background -->
+  <rect width="512" height="512" rx="112" ry="112" fill="url(#bg)"/>
+  <!-- Play triangle -->
+  <path d="M196 128 L196 384 L400 256 Z" fill="url(#play)" opacity="0.95"/>
+  <!-- Top sparkle -->
+  <circle cx="370" cy="120" r="18" fill="#FDCB6E"/>
+  <circle cx="370" cy="120" r="10" fill="#FFEAA7"/>
+  <!-- Small sparkle -->
+  <circle cx="410" cy="168" r="10" fill="#FDCB6E" opacity="0.7"/>
+</svg>
