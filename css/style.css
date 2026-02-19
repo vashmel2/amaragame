@@ -1283,7 +1283,164 @@ body {
 .nh-next-btn:active { transform: scale(0.95); }
 
 /* =============================================================
-   10. Animations
+   10. PUZZLE GARDEN — Game-specific styles
+   ============================================================= */
+
+.pg-game {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: linear-gradient(180deg, #F1F8E9 0%, #DCEDC8 50%, #C5E1A5 100%);
+  overflow: hidden;
+}
+
+/* ── Header ── */
+
+.pg-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+}
+
+.pg-level-label {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #33691E;
+}
+
+/* ── Stage ── */
+
+.pg-stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 16px;
+}
+
+.pg-buddy {
+  font-size: 3rem;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.12));
+}
+
+.pg-buddy.pg-buddy-happy {
+  animation: pg-buddy-dance 0.7s ease;
+}
+
+.pg-speech {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #33691E;
+  text-align: center;
+  background: rgba(255,255,255,0.6);
+  padding: 8px 24px;
+  border-radius: 100px;
+  backdrop-filter: blur(4px);
+}
+
+/* ── Pattern row ── */
+
+.pg-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.pg-pot {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.65rem;
+  transition: all 0.3s ease;
+}
+
+.pg-pot.pg-filled {
+  background: rgba(255,255,255,0.8);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  animation: pop-in 0.35s ease backwards;
+}
+
+.pg-pot.pg-blank {
+  background: transparent;
+  border: 3px dashed #8BC34A;
+  color: #8BC34A;
+  font-size: 1.5rem;
+  font-weight: 800;
+  animation: pad-pulse 1.2s ease-in-out infinite;
+}
+
+.pg-pot.pg-just-filled {
+  animation: pg-bloom 0.5s ease;
+  background: rgba(255,255,255,0.9);
+  box-shadow: 0 0 18px rgba(139, 195, 74, 0.5);
+}
+
+.pg-emoji {
+  line-height: 1;
+  display: block;
+}
+
+/* ── Choices ── */
+
+.pg-choices {
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+}
+
+.pg-choice {
+  width: 76px;
+  height: 76px;
+  border-radius: var(--radius-lg);
+  border: 3px solid transparent;
+  background: white;
+  font-size: 1.8rem;
+  cursor: pointer;
+  box-shadow: var(--shadow-soft);
+  transition: transform var(--ease), border-color var(--ease), background var(--ease), opacity var(--ease);
+  touch-action: manipulation;
+  animation: pop-in 0.3s ease backwards;
+}
+
+.pg-choice:active { transform: scale(0.92); }
+
+.pg-choice.pg-correct {
+  background: #C8E6C9;
+  border-color: #4CAF50;
+}
+
+.pg-choice.pg-wrong {
+  background: #FFCDD2;
+  border-color: #EF5350;
+  opacity: 0.4;
+}
+
+/* ── Feedback ── */
+
+.pg-feedback {
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-align: center;
+  min-height: 1.5em;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.pg-feedback-show    { opacity: 1; animation: pop-in 0.3s ease; }
+.pg-feedback-success { color: #2E7D32; }
+.pg-feedback-nudge   { color: #E17055; }
+
+/* =============================================================
+   11. Animations
    ============================================================= */
 
 @keyframes gentle-bounce {
@@ -1334,6 +1491,18 @@ body {
   0%   { top: 0; }
   40%  { top: -30px; }
   100% { top: 0; }
+}
+
+@keyframes pg-buddy-dance {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25%       { transform: translateY(-14px) rotate(-12deg); }
+  75%       { transform: translateY(-14px) rotate(12deg); }
+}
+
+@keyframes pg-bloom {
+  0%   { transform: scale(0.4) rotate(-20deg); opacity: 0.5; }
+  60%  { transform: scale(1.2) rotate(5deg);  opacity: 1; }
+  100% { transform: scale(1)   rotate(0deg);  opacity: 1; }
 }
 
 @keyframes goal-celebrate {
@@ -1390,6 +1559,11 @@ body {
   .nh-frog           { font-size: 1.8rem; }
   .nh-instruction    { font-size: 1.05rem; }
   .nh-mode-title     { font-size: 1.6rem; }
+
+  .pg-pot            { width: 46px; height: 46px; font-size: 1.35rem; }
+  .pg-choice         { width: 66px; height: 66px; font-size: 1.55rem; }
+  .pg-row            { gap: 6px; }
+  .pg-choices        { gap: 12px; }
 }
 
 /* Very small phones */
@@ -1401,6 +1575,11 @@ body {
   .nh-pad         { width: 40px; height: 40px; font-size: 0.95rem; }
   .nh-choice-btn  { width: 56px; height: 56px; font-size: 1.15rem; }
   .nh-pond        { gap: 3px; }
+
+  .pg-pot         { width: 40px; height: 40px; font-size: 1.15rem; }
+  .pg-choice      { width: 58px; height: 58px; font-size: 1.35rem; }
+  .pg-row         { gap: 4px; }
+  .pg-choices     { gap: 10px; }
 }
 
 /* Landscape phones — give more room to the game */

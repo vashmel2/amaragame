@@ -27,14 +27,6 @@ const PLACEHOLDERS = [
     teaser: 'Coming soon!',
   },
   {
-    id: 'puzzle-garden',
-    title: 'Puzzle Garden',
-    category: 'thinking',
-    thumbnail: '\u{1F331}',
-    description: 'Grow flowers by solving puzzles!',
-    teaser: 'Coming soon!',
-  },
-  {
     id: 'shape-builder',
     title: 'Shape Builder',
     category: 'thinking',

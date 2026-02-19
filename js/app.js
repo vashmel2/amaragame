@@ -15,6 +15,7 @@ import { Audio } from './audio.js';
 // ── Import games (each self-registers with GameRegistry) ──
 import './games/feed-monster.js';
 import './games/number-hop.js';
+import './games/puzzle-garden.js';
 import './games/coming-soon.js';
 
 // ── DOM helpers ──
@@ -119,7 +120,6 @@ async function renderMenu() {
   if (!profile) return renderWelcome();
 
   const cats = GameRegistry.getCategories();
-  const allProfiles = await ProfileManager.getAllProfiles();
 
   showScreen(container => {
     container.innerHTML = `
@@ -141,25 +141,6 @@ async function renderMenu() {
             </button>
           `).join('')}
         </div>
-
-        <div class="profile-overlay" id="profile-overlay" style="display:none">
-          <div class="profile-card">
-            <div class="profile-card-header">
-              <span class="profile-card-title">Who's playing?</span>
-              <button class="profile-card-close" id="profile-close">\u{2715}</button>
-            </div>
-            <div class="profile-list" id="profile-list">
-              ${allProfiles.map(p => `
-                <button class="profile-item${p.id === profile.id ? ' profile-active' : ''}" data-id="${p.id}">
-                  <span class="profile-item-avatar">${p.avatar}</span>
-                  <span class="profile-item-name">${esc(p.name)}</span>
-                  ${p.id === profile.id ? '<span class="profile-item-check">\u{2714}</span>' : ''}
-                </button>
-              `).join('')}
-            </div>
-            <button class="profile-add-btn" id="profile-add">\u{2795} Add Player</button>
-          </div>
-        </div>
       </div>`;
 
     // Category tiles
@@ -170,37 +151,63 @@ async function renderMenu() {
       });
     });
 
-    // Profile switcher
-    const overlay = $('#profile-overlay');
+    // Guard against ghost clicks from game back buttons:
+    // don't open the switcher within 400ms of the menu rendering.
+    const readyAt = Date.now() + 400;
 
-    $('#profile-badge').addEventListener('click', () => {
+    $('#profile-badge').addEventListener('click', async () => {
+      if (Date.now() < readyAt) return;
       Audio.pop();
-      overlay.style.display = '';
-    });
 
-    $('#profile-close').addEventListener('click', () => {
-      Audio.click();
-      overlay.style.display = 'none';
-    });
+      // Build overlay dynamically so it's never in the DOM on load
+      const allProfiles = await ProfileManager.getAllProfiles();
+      const overlay = document.createElement('div');
+      overlay.className = 'profile-overlay';
+      overlay.innerHTML = `
+        <div class="profile-card">
+          <div class="profile-card-header">
+            <span class="profile-card-title">Who's playing?</span>
+            <button class="profile-card-close">\u{2715}</button>
+          </div>
+          <div class="profile-list">
+            ${allProfiles.map(p => `
+              <button class="profile-item${p.id === profile.id ? ' profile-active' : ''}" data-id="${p.id}">
+                <span class="profile-item-avatar">${p.avatar}</span>
+                <span class="profile-item-name">${esc(p.name)}</span>
+                ${p.id === profile.id ? '<span class="profile-item-check">\u{2714}</span>' : ''}
+              </button>
+            `).join('')}
+          </div>
+          <button class="profile-add-btn">\u{2795} Add Player</button>
+        </div>`;
 
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) {
+      const close = () => overlay.remove();
+
+      overlay.querySelector('.profile-card-close').addEventListener('click', () => {
         Audio.click();
-        overlay.style.display = 'none';
-      }
-    });
-
-    $$('.profile-item').forEach(item => {
-      item.addEventListener('click', async () => {
-        Audio.pop();
-        await ProfileManager.setActiveProfile(item.dataset.id);
-        renderMenu();
+        close();
       });
-    });
 
-    $('#profile-add').addEventListener('click', () => {
-      Audio.click();
-      renderWelcome();
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) { Audio.click(); close(); }
+      });
+
+      overlay.querySelectorAll('.profile-item').forEach(item => {
+        item.addEventListener('click', async () => {
+          Audio.pop();
+          await ProfileManager.setActiveProfile(item.dataset.id);
+          close();
+          renderMenu();
+        });
+      });
+
+      overlay.querySelector('.profile-add-btn').addEventListener('click', () => {
+        Audio.click();
+        close();
+        renderWelcome();
+      });
+
+      container.appendChild(overlay);
     });
   });
 }
