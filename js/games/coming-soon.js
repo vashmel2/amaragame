@@ -42,14 +42,6 @@ const PLACEHOLDERS = [
     description: 'Match faces to feelings!',
     teaser: 'Coming soon!',
   },
-  {
-    id: 'mood-garden',
-    title: 'Mood Garden',
-    category: 'feelings',
-    thumbnail: '\u{1F33B}',
-    description: 'Grow a garden of emotions!',
-    teaser: 'Coming soon!',
-  },
 ];
 
 function makePlaceholder(cfg) {

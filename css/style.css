@@ -1532,6 +1532,201 @@ body {
 }
 
 /* =============================================================
+   12. MOOD GARDEN — Emotion & Empathy Game
+   ============================================================= */
+
+.mg-game {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: linear-gradient(160deg, #e8f8f0 0%, #fef6fb 100%);
+  overflow: hidden;
+}
+
+.mg-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px 8px;
+}
+
+.mg-level-label {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #6C5CE7;
+  flex: 1;
+  text-align: right;
+}
+
+/* ── Stage ─────────────────────────────────────────────────── */
+
+.mg-stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 16px 0;
+  overflow: hidden;
+}
+
+/* Scenario card */
+.mg-scenario-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 18px 20px;
+  box-shadow: 0 4px 16px rgba(108,92,231,0.10);
+  text-align: center;
+  width: 100%;
+  max-width: 420px;
+}
+
+.mg-scene-emojis {
+  font-size: 2.4rem;
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+
+.mg-scene-text {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #2D3436;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Question prompt */
+.mg-question {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #6C5CE7;
+}
+
+/* ── Choices ────────────────────────────────────────────────── */
+
+.mg-choices {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+}
+
+.mg-choice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 96px;
+  padding: 14px 8px;
+  border-radius: 18px;
+  border: 3px solid transparent;
+  background: color-mix(in srgb, var(--choice-color) 20%, white);
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+  animation: mg-pop-in 0.35s both;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+.mg-choice:hover:not(:disabled) {
+  transform: translateY(-4px) scale(1.05);
+  border-color: var(--choice-color);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+.mg-choice-face  { font-size: 2rem; line-height: 1; }
+.mg-choice-label { font-size: 0.78rem; font-weight: 800; color: #2D3436; }
+
+.mg-choice.mg-correct {
+  border-color: #6BCB77;
+  background: #e8faf0;
+  transform: scale(1.08);
+}
+
+.mg-choice.mg-wrong {
+  opacity: 0.38;
+  transform: scale(0.95);
+}
+
+/* ── Feedback ───────────────────────────────────────────────── */
+
+.mg-feedback {
+  min-height: 28px;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+.mg-feedback.mg-feedback-show  { opacity: 1; }
+.mg-feedback.mg-feedback-success { color: #00B894; }
+.mg-feedback.mg-feedback-nudge   { color: #E17055; }
+
+/* ── Garden ─────────────────────────────────────────────────── */
+
+.mg-garden {
+  background: #d4edda;
+  border-top: 3px solid #b2dfdb;
+  padding: 12px 16px 16px;
+  text-align: center;
+}
+
+.mg-garden-label {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #2D7D46;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.mg-flower-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.mg-flower {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  line-height: 1;
+  border: 3px solid rgba(255,255,255,0.6);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+}
+
+.mg-flower-empty {
+  background: #a5d6a7;
+  border-style: dashed;
+  border-color: #81c784;
+  opacity: 0.7;
+}
+
+.mg-flower-planted {
+  animation: mg-bloom 0.45s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+
+.mg-just-planted {
+  animation: mg-bloom 0.45s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+
+/* ── Animations ─────────────────────────────────────────────── */
+
+@keyframes mg-pop-in {
+  from { opacity: 0; transform: scale(0.7) translateY(10px); }
+  to   { opacity: 1; transform: scale(1)   translateY(0);    }
+}
+
+@keyframes mg-bloom {
+  0%   { transform: scale(0);   opacity: 0; }
+  60%  { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1);   opacity: 1; }
+}
+
+/* =============================================================
    10. Responsive
    ============================================================= */
 
@@ -1564,6 +1759,12 @@ body {
   .pg-choice         { width: 66px; height: 66px; font-size: 1.55rem; }
   .pg-row            { gap: 6px; }
   .pg-choices        { gap: 12px; }
+
+  .mg-choice         { width: 82px; padding: 10px 6px; }
+  .mg-choice-face    { font-size: 1.7rem; }
+  .mg-flower         { width: 44px; height: 44px; font-size: 1.35rem; }
+  .mg-scene-emojis   { font-size: 2rem; }
+  .mg-scene-text     { font-size: 1rem; }
 }
 
 /* Very small phones */
@@ -1580,6 +1781,10 @@ body {
   .pg-choice      { width: 58px; height: 58px; font-size: 1.35rem; }
   .pg-row         { gap: 4px; }
   .pg-choices     { gap: 10px; }
+
+  .mg-choice      { width: 74px; padding: 8px 4px; }
+  .mg-choice-face { font-size: 1.5rem; }
+  .mg-flower      { width: 38px; height: 38px; font-size: 1.15rem; }
 }
 
 /* Landscape phones — give more room to the game */

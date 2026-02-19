@@ -16,6 +16,7 @@ import { Audio } from './audio.js';
 import './games/feed-monster.js';
 import './games/number-hop.js';
 import './games/puzzle-garden.js';
+import './games/mood-garden.js';
 import './games/coming-soon.js';
 
 // ── DOM helpers ──
