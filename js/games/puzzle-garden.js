@@ -92,7 +92,7 @@ function buildChoices(puzzle) {
 const PuzzleGardenGame = {
   id:       'puzzle-garden',
   title:    'Puzzle Garden',
-  icon:     '🌻',
+  thumbnail: '🌻',
   category: 'thinking',
 
   _container: null,
