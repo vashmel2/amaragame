@@ -310,9 +310,6 @@ const ShapeBuilderGame = {
         </div>
 
         <div class="sb-feedback" id="sb-feedback"></div>
-        <button class="sb-next-btn" id="sb-next" style="display:none">
-          ✨ Next Build &#x2192;
-        </button>
         <div class="fm-confetti" id="sb-confetti"></div>
       </div>`;
 
@@ -321,20 +318,6 @@ const ShapeBuilderGame = {
     this._container.querySelector('#sb-back').addEventListener('click', () => {
       Audio.click();
       this._callbacks.onExit();
-    });
-
-    this._container.querySelector('#sb-next').addEventListener('click', () => {
-      Audio.click();
-      this._state.buildIdx++;
-      this._state.pieceIdx = 0;
-      // Reshuffle at the start of each new cycle, not mid-build
-      if (this._state.buildIdx % BUILDS.length === 0) {
-        this._state.deck = shuffle(BUILDS.map((_, i) => i));
-      }
-      this._callbacks.onProgress({
-        custom: { buildIdx: this._state.buildIdx, pieceIdx: 0, deck: this._state.deck },
-      });
-      this._render();
     });
 
     this._container.querySelectorAll('.sb-choice').forEach(btn => {
@@ -368,7 +351,28 @@ const ShapeBuilderGame = {
         this._container.querySelector('.sb-prompt').style.display = 'none';
         this._container.querySelector('.sb-piece-count').textContent = 'Done! ✓';
         fb.textContent = `${build.emoji} You built a ${build.label}! Amazing! 🌟`;
-        $('#sb-next').style.display = '';
+
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'sb-next-btn';
+        nextBtn.textContent = '✨ Next Build →';
+        nextBtn.addEventListener('click', () => {
+          Audio.click();
+          this._state.buildIdx++;
+          this._state.pieceIdx = 0;
+          if (this._state.buildIdx % BUILDS.length === 0) {
+            this._state.deck = shuffle(BUILDS.map((_, i) => i));
+          }
+          this._callbacks.onProgress({
+            custom: {
+              buildIdx: this._state.buildIdx,
+              pieceIdx: 0,
+              deck:     this._state.deck,
+            },
+          });
+          this._render();
+        });
+        this._container.querySelector('.sb-game').appendChild(nextBtn);
+
         this._spawnConfetti();
       } else {
         fb.textContent = 'Perfect! ⭐';
