@@ -205,15 +205,6 @@ const NumberHopGame = {
           <div class="nh-choices" id="nh-choices"></div>
           <button class="nh-next-btn" id="nh-next" style="display:none">Next Level \u{2192}</button>
         </div>
-        <div class="nh-peek-overlay" id="nh-peek-overlay" style="display:none">
-          <div class="nh-peek-card">
-            <div class="nh-peek-header">
-              <span class="nh-peek-title" id="nh-peek-title"></span>
-              <button class="nh-peek-close" id="nh-peek-close">\u{2715}</button>
-            </div>
-            <div class="nh-peek-grid" id="nh-peek-grid"></div>
-          </div>
-        </div>
         <div class="fm-confetti" id="nh-confetti"></div>
       </div>`;
 
@@ -226,9 +217,6 @@ const NumberHopGame = {
       feedback: this._container.querySelector('#nh-feedback'),
       nextBtn: this._container.querySelector('#nh-next'),
       confetti: this._container.querySelector('#nh-confetti'),
-      peekOverlay: this._container.querySelector('#nh-peek-overlay'),
-      peekTitle: this._container.querySelector('#nh-peek-title'),
-      peekGrid: this._container.querySelector('#nh-peek-grid'),
     };
 
     this._container.querySelector('#nh-back').addEventListener('click', () => {
@@ -239,18 +227,6 @@ const NumberHopGame = {
     this._container.querySelector('#nh-peek').addEventListener('click', () => {
       Audio.pop();
       this._showPeekChart();
-    });
-
-    this._container.querySelector('#nh-peek-close').addEventListener('click', () => {
-      Audio.click();
-      this._el.peekOverlay.style.display = 'none';
-    });
-
-    this._el.peekOverlay.addEventListener('click', (e) => {
-      if (e.target === this._el.peekOverlay) {
-        Audio.click();
-        this._el.peekOverlay.style.display = 'none';
-      }
     });
 
     this._el.nextBtn.addEventListener('click', () => {
@@ -525,17 +501,33 @@ const NumberHopGame = {
     const modeInfo = MODES.find(m => m.step === this._state.mode);
     const { step, max, label } = modeInfo;
 
-    this._el.peekTitle.textContent = `\u{1F4A1} ${label}`;
-    this._el.peekGrid.innerHTML = '';
+    // Build the overlay dynamically so it never exists in the DOM while hidden
+    const overlay = document.createElement('div');
+    overlay.className = 'nh-peek-overlay';
 
+    const grid = document.createElement('div');
+    grid.className = 'nh-peek-grid';
     for (let n = step; n <= max; n += step) {
       const cell = document.createElement('span');
       cell.className = 'nh-peek-cell';
       cell.textContent = n;
-      this._el.peekGrid.appendChild(cell);
+      grid.appendChild(cell);
     }
 
-    this._el.peekOverlay.style.display = '';
+    overlay.innerHTML = `
+      <div class="nh-peek-card">
+        <div class="nh-peek-header">
+          <span class="nh-peek-title">\u{1F4A1} ${label}</span>
+          <button class="nh-peek-close">\u{2715}</button>
+        </div>
+      </div>`;
+    overlay.querySelector('.nh-peek-card').appendChild(grid);
+
+    const close = () => { Audio.click(); overlay.remove(); };
+    overlay.querySelector('.nh-peek-close').addEventListener('click', close);
+    overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+
+    this._container.querySelector('.nh-game').appendChild(overlay);
   },
 };
 

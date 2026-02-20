@@ -309,6 +309,9 @@ const ShapeBuilderGame = {
         </div>
 
         <div class="sb-feedback" id="sb-feedback"></div>
+        <button class="sb-next-btn" id="sb-next" style="display:none">
+          ✨ Next Build &#x2192;
+        </button>
         <div class="fm-confetti" id="sb-confetti"></div>
       </div>`;
 
@@ -317,6 +320,16 @@ const ShapeBuilderGame = {
     this._container.querySelector('#sb-back').addEventListener('click', () => {
       Audio.click();
       this._callbacks.onExit();
+    });
+
+    this._container.querySelector('#sb-next').addEventListener('click', () => {
+      Audio.click();
+      this._state.buildIdx++;
+      this._state.pieceIdx = 0;
+      this._callbacks.onProgress({
+        custom: { buildIdx: this._state.buildIdx, pieceIdx: 0, deck: this._state.deck },
+      });
+      this._render();
     });
 
     this._container.querySelectorAll('.sb-choice').forEach(btn => {
@@ -337,30 +350,36 @@ const ShapeBuilderGame = {
 
       const allDone = this._state.pieceIdx + 1 >= build.pieces.length;
       const fb = $('#sb-feedback');
-      fb.textContent = allDone
-        ? `${build.emoji} ${build.label} done! Brilliant! 🌟`
-        : 'Perfect! ⭐';
       fb.className = 'sb-feedback sb-feedback-show';
 
-      if (allDone) this._spawnConfetti();
-
-      setTimeout(() => {
-        if (this._destroyed) return;
-        if (allDone) {
-          this._state.buildIdx++;
-          this._state.pieceIdx = 0;
-        } else {
-          this._state.pieceIdx++;
+      if (allDone) {
+        // Show completed picture — re-render SVG with all pieces filled
+        const canvas = this._container.querySelector('.sb-canvas');
+        if (canvas) {
+          canvas.innerHTML = build.pieces.map(p => pieceSVG(p, 'fill')).join('');
         }
-        this._callbacks.onProgress({
-          custom: {
-            buildIdx: this._state.buildIdx,
-            pieceIdx: this._state.pieceIdx,
-            deck:     this._state.deck,
-          },
-        });
-        this._render();
-      }, allDone ? 2000 : 1100);
+        // Hide choices & prompt, show celebration + Next Build button
+        this._container.querySelector('.sb-choices').style.display = 'none';
+        this._container.querySelector('.sb-prompt').style.display = 'none';
+        this._container.querySelector('.sb-piece-count').textContent = 'Done! ✓';
+        fb.textContent = `${build.emoji} You built a ${build.label}! Amazing! 🌟`;
+        $('#sb-next').style.display = '';
+        this._spawnConfetti();
+      } else {
+        fb.textContent = 'Perfect! ⭐';
+        setTimeout(() => {
+          if (this._destroyed) return;
+          this._state.pieceIdx++;
+          this._callbacks.onProgress({
+            custom: {
+              buildIdx: this._state.buildIdx,
+              pieceIdx: this._state.pieceIdx,
+              deck:     this._state.deck,
+            },
+          });
+          this._render();
+        }, 1100);
+      }
 
     } else {
       Audio.gentle();
