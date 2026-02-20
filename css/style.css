@@ -1532,7 +1532,165 @@ body {
 }
 
 /* =============================================================
-   12. MOOD GARDEN — Emotion & Empathy Game
+   12. SHAPE BUILDER — SVG build game
+   ============================================================= */
+
+.sb-game {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.sb-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px 6px;
+  flex-shrink: 0;
+}
+
+.sb-build-label {
+  flex: 1;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #2D3436;
+}
+
+.sb-piece-count {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #6C5CE7;
+  background: rgba(108,92,231,0.10);
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+/* ── Canvas ─────────────────────────────────────────────────── */
+
+.sb-canvas-wrap {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 16px 4px;
+  min-height: 0;
+}
+
+.sb-canvas-inner {
+  background: #fff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+  width: min(230px, 80vw);
+  height: min(230px, 80vw);
+}
+
+.sb-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Pulsing outline for the target piece (SVG element class) */
+@keyframes sb-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.45; }
+}
+
+.sb-target-piece {
+  animation: sb-pulse 1.1s ease-in-out infinite;
+}
+
+/* ── Prompt ─────────────────────────────────────────────────── */
+
+.sb-prompt {
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #636E72;
+  margin: 4px 0 6px;
+  flex-shrink: 0;
+}
+
+.sb-prompt strong {
+  color: #6C5CE7;
+  font-size: 1.1rem;
+}
+
+/* ── Choices ────────────────────────────────────────────────── */
+
+.sb-choices {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  padding: 0 16px;
+  flex-shrink: 0;
+}
+
+.sb-choice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 12px;
+  border-radius: 16px;
+  border: 3px solid #E0E0E0;
+  background: #fff;
+  cursor: pointer;
+  transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  animation: mg-pop-in 0.32s both;
+}
+
+.sb-choice:nth-child(2) { animation-delay: 0.07s; }
+.sb-choice:nth-child(3) { animation-delay: 0.14s; }
+
+.sb-choice:hover:not(:disabled) {
+  transform: translateY(-4px) scale(1.06);
+  border-color: #6C5CE7;
+  box-shadow: 0 8px 20px rgba(108,92,231,0.18);
+}
+
+.sb-choice-svg   { width: 56px; height: 56px; display: block; }
+.sb-choice-label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #2D3436;
+  text-transform: capitalize;
+}
+
+.sb-choice.sb-correct {
+  border-color: #6BCB77;
+  background: #e8faf0;
+  transform: scale(1.08);
+}
+
+.sb-choice.sb-wrong {
+  opacity: 0.35;
+  transform: scale(0.94);
+}
+
+/* ── Feedback ───────────────────────────────────────────────── */
+
+.sb-feedback {
+  min-height: 26px;
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #00B894;
+  opacity: 0;
+  transition: opacity 0.2s;
+  padding: 4px 0 8px;
+  flex-shrink: 0;
+}
+
+.sb-feedback.sb-feedback-show    { opacity: 1; }
+.sb-feedback.sb-feedback-nudge   { color: #E17055; }
+
+/* =============================================================
+   13. MOOD GARDEN — Emotion & Empathy Game
    ============================================================= */
 
 .mg-game {
@@ -1765,6 +1923,10 @@ body {
   .mg-flower         { width: 44px; height: 44px; font-size: 1.35rem; }
   .mg-scene-emojis   { font-size: 2rem; }
   .mg-scene-text     { font-size: 1rem; }
+
+  .sb-canvas-inner   { width: min(200px, 78vw); height: min(200px, 78vw); }
+  .sb-choice         { padding: 8px 10px; }
+  .sb-choice-svg     { width: 48px; height: 48px; }
 }
 
 /* Very small phones */
@@ -1785,6 +1947,11 @@ body {
   .mg-choice      { width: 74px; padding: 8px 4px; }
   .mg-choice-face { font-size: 1.5rem; }
   .mg-flower      { width: 38px; height: 38px; font-size: 1.15rem; }
+
+  .sb-canvas-inner { width: min(180px, 75vw); height: min(180px, 75vw); }
+  .sb-choice       { padding: 6px 8px; gap: 4px; }
+  .sb-choice-svg   { width: 42px; height: 42px; }
+  .sb-choices      { gap: 10px; }
 }
 
 /* Landscape phones — give more room to the game */

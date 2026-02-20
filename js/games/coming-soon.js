@@ -27,14 +27,6 @@ const PLACEHOLDERS = [
     teaser: 'Coming soon!',
   },
   {
-    id: 'shape-builder',
-    title: 'Shape Builder',
-    category: 'thinking',
-    thumbnail: '\u{1F4D0}',
-    description: 'Build cool things with shapes!',
-    teaser: 'Coming soon!',
-  },
-  {
     id: 'feeling-faces',
     title: 'Feeling Faces',
     category: 'feelings',
