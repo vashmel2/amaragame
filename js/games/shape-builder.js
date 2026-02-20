@@ -265,11 +265,12 @@ const ShapeBuilderGame = {
   destroy() { this._destroyed = true; },
 
   _render() {
-    const cyclePos = this._state.buildIdx % BUILDS.length;
-    if (!this._state.deck || cyclePos === 0) {
+    // Create deck on first render only — never mid-build
+    if (!this._state.deck) {
       this._state.deck = shuffle(BUILDS.map((_, i) => i));
     }
 
+    const cyclePos = this._state.buildIdx % BUILDS.length;
     const build    = BUILDS[this._state.deck[cyclePos]];
     const pieceIdx = this._state.pieceIdx;
     const piece    = build.pieces[pieceIdx];
@@ -326,6 +327,10 @@ const ShapeBuilderGame = {
       Audio.click();
       this._state.buildIdx++;
       this._state.pieceIdx = 0;
+      // Reshuffle at the start of each new cycle, not mid-build
+      if (this._state.buildIdx % BUILDS.length === 0) {
+        this._state.deck = shuffle(BUILDS.map((_, i) => i));
+      }
       this._callbacks.onProgress({
         custom: { buildIdx: this._state.buildIdx, pieceIdx: 0, deck: this._state.deck },
       });
